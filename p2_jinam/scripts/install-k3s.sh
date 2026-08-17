@@ -3,7 +3,7 @@
 curl -sfL https://get.k3s.io | sh -
 
 sudo k3s kubectl wait \
-  --for=condition==Ready \
+  --for=condition=Ready \
   node \
   --all \
   --timeout=120s
