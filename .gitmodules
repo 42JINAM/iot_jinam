@@ -1,0 +1,3 @@
+[submodule "p3_jinam/manifests/app"]
+	path = p3_jinam/manifests/app
+	url = git@github.com:42JINAM/iot_jinam.git
