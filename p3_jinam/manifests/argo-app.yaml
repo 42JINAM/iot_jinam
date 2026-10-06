@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/42JINAM/iot_jinam
+    repoURL: https://github.com/42JINAM/iot_jinam.git
     targetRevision: main
-    path: ./p3_jinam/manifests/app/
+    path: p3_jinam/manifests/app
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
