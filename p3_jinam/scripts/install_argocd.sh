@@ -29,6 +29,8 @@ kubectl wait \
   -n argocd \
   --timeout=300s
 
+kubectl apply -f /vagrant/manifests/argo-app.yaml
+
 echo "=== Argo CD pods ==="
 kubectl get pods -n argocd
 echo "=== Dev pods ==="
