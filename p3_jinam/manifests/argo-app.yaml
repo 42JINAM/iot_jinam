@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/42JINAM/iot_jinam
     targetRevision: main
-    path: .
+    path: ./p3_jinam/manifests/app/
   destination:
     server: https://kubernetes.default.svc
     namespace: dev

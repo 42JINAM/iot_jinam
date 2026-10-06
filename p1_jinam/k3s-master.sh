@@ -1,10 +1,37 @@
 #!/bin/bash
 
-curl -sfL https://get.k3s.io | sh -
+set +e
+
+curl -sfL https://get.k3s.io | sh -s - --node-ip=192.168.56.110
 #install k3s binary 
 #create systemd unit file at /etc/systemd/system/k3s.service
 # systemctl enable k3s, enable the k3s service to start automatically at boot.
 # systemctl restart k3s service
+
+K3S_INSTALL_STATUS=$?
+set -e
+
+echo "K3s installer exited with code: $K3S_INSTALL_STATUS"
+echo "Checking K3s service..."
+sudo systemctl status k3s --no-pager || true
+
+echo "Waiting for Kubernetes API..."
+
+until sudo k3s kubectl get nodes --no-headers 2>/dev/null | grep -q .; do
+    echo "Waiting for Kubernetes node..."
+    sleep 2
+done
+
+echo "Node exists."
+
+sudo k3s kubectl wait \
+    --for=condition=Ready \
+    node \
+    --all \
+    --timeout=120s
+
+echo "Kubernetes node is Ready."
+
 
 KUBE_USER="vagrant"
 KUBE_HOME="/home/$KUBE_USER"

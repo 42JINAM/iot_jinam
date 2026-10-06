@@ -33,7 +33,7 @@ spec: # deployment 에게 할일 알려주기
             - containerPort: 80
           volumeMounts:
             - name: html
-              mountPath: /usr/share/nginx/html/index.html
+              mountPath: /usr/share/nginx/html
               subPath: index.html
       volumes:
         - name: html

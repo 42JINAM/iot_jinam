@@ -1,27 +1,31 @@
 #!/bin/bash
-set -eu
+set +e
 
 sudo timedatectl set-ntp true 
-
 sudo apt-get update
 sudo apt-get install -y chrony
-
 sudo systemctl enable --now chrony
 sudo chronyc -a makestep
 
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | sh -s - --node-ip=192.168.56.110
+K3S_INSTALL_STATUS=$?
+set -e
+
+echo "K3s installer exited with code: $K3S_INSTALL_STATUS"
+echo "Checking K3s service..."
+sudo systemctl status k3s --no-pager || true
+echo "Waiting for Kubernetes API..."
 
 until sudo k3s kubectl get nodes >/dev/null 2>&1; do
-  echo "Waiting for Kubernetes API..."
-  sleep 2
+    echo "Waiting for Kubernetes API..."
+    sleep 2
 done
 
-sudo k3s kubectl wait \
-  --for=condition=Ready \
-  node \
-  --all \
-  --timeout=120s
+echo "Kubernetes API is ready."
 
+sudo k3s kubectl wait --for=condition=Ready node --all --timeout=120s
+
+echo "Kubernetes node is Ready."
 KUBE_USER="vagrant"
 KUBE_HOME="/home/$KUBE_USER"
 

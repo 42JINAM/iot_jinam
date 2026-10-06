@@ -12,8 +12,14 @@ help:
 install:
 	bash scripts/install_docker_k3s_kubctl.sh
 
+init_vm:
+	vagrant up
+
 setup-k3d:
 	bash scripts/setup_k3d.sh
+
+install_app:
+	kubectl apply -f manifests/app/app.yaml
 
 install-argocd:
 	bash scripts/install_argocd.sh
